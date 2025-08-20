@@ -55,6 +55,26 @@ const menus = ref<MenuItem[]>([
         path: '/formCache',
         icon: 'icon-form-cache',
       },
+      {
+        title: '长表单错误滚动',
+        path: '/scrollError',
+        icon: 'icon-form-error',
+      },
+      {
+        title: '长表单分页',
+        path: '/formPage',
+        icon: 'icon-form-page',
+      },
+      {
+        title: '表单锚点',
+        path: '/formAnchor',
+        icon: 'icon-form-anchor',
+      },
+      {
+        title: '自定义指令控制',
+        path: '/permissionForm',
+        icon: 'icon-form-permission',
+      }
     ],
   },
   {

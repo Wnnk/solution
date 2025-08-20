@@ -1,13 +1,14 @@
 <!-- 
   @Author: Wnnk
   @description: 
-    问题1: 长表单误触后退/刷新，导致表单数据丢失
-      解决方案：表单缓存
-
+    问题1：长表单校验错误，优化体验
+      解决方案：滚动到错误字段所在位置，提示错误信息 scrollToField。
 -->
+
 <template>
-  <div class="form-cache">
-    <el-form :model="form" ref="formRef" :rules="rules">
+<div class="scroll-error">
+  <h1>单页长表单</h1>
+   <el-form :model="form" ref="formRef" :rules="rules">
       <el-form-item label="设备ID" prop="id">
         <el-input v-model="form.id"></el-input>
       </el-form-item>
@@ -87,22 +88,16 @@
       <el-form-item label="最后更新人" prop="lastUpdatedBy">
         <el-input v-model="form.lastUpdatedBy"></el-input>
       </el-form-item>
-      <el-button type="success">保存</el-button>
+      <el-button type="success" @click="submitForm">保存</el-button>
       <el-button type="warning">重置</el-button>
     </el-form>
-  </div>
+</div>
+
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { ref, reactive } from 'vue'
-import {useFormCache } from '@/hooks/Form/useFormCache'
-import { v4 as uuidv4 } from 'uuid';
-import { onMounted } from 'vue';
 
-const { autoSave, loadFormCache} = useFormCache(
-  'test',
-  {cacheLocation: 'localStorage'}
-)
 const form = ref({
   id: 'unique_device_id',
   name: '设备名称',
@@ -148,13 +143,67 @@ const rules = reactive({
   category: [{ required: true, message: '请选择设备类别', trigger: 'change' }],
 })
 
-onMounted(async () => {
-  autoSave(form.value)
-  const cacheData = await loadFormCache()
-  if (cacheData && Object.keys(cacheData).length > 0) {
-    form.value = cacheData
-  }
+const submitForm = () => {
+  formRef.value.validate((valid) => {
+    if(!valid) {
+      formRef.value.scrollToField(formRef.value.fields.find(field => field.validateState === 'error').prop )
+    }
+  })
+}
+
+const form1 = ref({
+  id: 'unique_device_id',
+  name: '设备名称',
+  model: '设备型号',
+  serialNumber: '序列号',
+  manufacturer: '制造商',
+  category: '设备类别',
+  status: '状态(在用/闲置/维修/报废)',
+  purchaseDate: '购买日期',
+  warrantyExpiry: '保修到期日',
+  price: '购买价格',
+  location: {
+    building: '所在建筑',
+    room: '房间号',
+    department: [],
+  },
+  specifications: {
+    // 设备技术规格详情
+  },
+  maintenanceRecords: [
+    // 维护记录数组
+  ],
+  usageHistory: [
+    // 使用历史记录
+  ],
+  attachments: [
+    // 相关附件(图片、文档等)
+  ],
+  notes: '备注信息',
+  createdAt: '创建时间',
+  updatedAt: '最后更新时间',
+  createdBy: '创建人',
+  lastUpdatedBy: '最后更新人',
 })
+const formRef1 = ref(null)
+const rules1 = reactive({
+  id: [{ required: true, message: '请输入设备ID', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入设备名称', trigger: 'blur' }],
+  model: [{ required: true, message: '请选择设备型号', trigger: 'change' }],
+  serialNumber: [{ required: true, message: '请输入序列号', trigger: 'blur' }],
+  manufacturer: [{ required: true, message: '请选择制造商', trigger: 'change' }],
+  category: [{ required: true, message: '请选择设备类别', trigger: 'change' }],
+})
+
+const submitForm1 = () => {
+  formRef1.value.validate((valid) => {
+    if(!valid) {
+      formRef1.value.scrollToField(formRef1.value.fields.find(field => field.validateState === 'error').prop )
+    }
+  })
+}
+
 </script>
 
-<style lang="scss" scoped></style>
+<style lang='scss' scoped>
+</style>

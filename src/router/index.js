@@ -9,6 +9,26 @@ const router = createRouter({
       component: () => import('@/views/Form/FormCache/FormCache.vue'),
     },
     {
+      path: '/scrollError',
+      name: 'ScrollError',
+      component: () => import('@/views/Form/ScrollError/ScrollError.vue')
+    },
+    {
+      path: '/formPage',
+      name: 'FormPage',
+      component: () => import('@/views/Form/FormPage/FormPage.vue')
+    },
+    {
+      path: '/formAnchor',
+      name: 'FormAnchor',
+      component: () => import('@/views/Form/FormAnchor/FormAnchor.vue'),
+    },
+    {
+      path: '/permissionForm',
+      name: 'PermissionForm',
+      component: () => import('@/views/Form/PermissionForm/PermissionForm.vue')
+    },
+    {
       path: '/chartAdapt',
       name: 'ChartAdapt',
       component: () => import('@/views/Chart/ChartAdapt/ChartAdapt.vue'),
