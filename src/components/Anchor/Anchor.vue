@@ -7,7 +7,14 @@
 <template>
   <div class="anchor">
     <div class="anchor-list">
-      <AnthorItem v-for="item in params" :key="item.href" :params="item" @click="toggleActive(item.href)" :active="activeHref"/>
+      <AnthorItem 
+        v-for="item in params" 
+        :key="item.href" 
+        :params="item"
+        @click="toggleActive(item.href)" 
+        :active="activeHref"
+        :errors="errors"
+      />
     </div>
     
   </div>
@@ -33,6 +40,11 @@ const props = defineProps({
     default: () => [],
     required: true
   },
+  errors: {
+    type: Array as () => Array<string>,
+    default: () => [],
+    required: false
+  }
 })
 
 const params = computed(() => {

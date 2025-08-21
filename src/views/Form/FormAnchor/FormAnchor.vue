@@ -1,9 +1,12 @@
-<!--  -->
+<!-- 
+  @Author: WWnk
+  @description: 表单页锚点Dome，
+-->
 
 <template>
 
 <div class="form-anchor">
-   <el-form :model="form" ref="formRef" >
+   <el-form :model="form" ref="formRef" :rules="rules" scroll-to-error >
       <el-form-item label="设备ID" prop="id" id="id">
         <el-input v-model="form.id"></el-input>
       </el-form-item>
@@ -86,12 +89,13 @@
       <el-form-item label="最后更新人" prop="lastUpdatedBy" id="lastUpdatedBy">
         <el-input v-model="form.lastUpdatedBy"></el-input>
       </el-form-item>
+      <el-form-item>
+          <el-button type="primary" @click="handleSubmit">保存</el-button>
+      </el-form-item>
   </el-form>
 
-  <Anchor :params="params" />
-  <el-anchor>
-    <el-anchor-link href="#id" title="设备ID"></el-anchor-link>
-  </el-anchor>
+  <Anchor :params="params" :errors="errors"/>
+ 
 </div>
 
 </template>
@@ -101,17 +105,18 @@ import { ref } from 'vue'
 import Anchor from '@/components/Anchor/Anchor.vue'
 import { ParamsType } from '@/components/Anchor/type'
 import { computed } from 'vue'
+import { reactive } from 'vue'
 
 
 
 const form = ref({
-  id: 'unique_device_id',
+  id: '',
   name: '设备名称',
   model: '设备型号',
   serialNumber: '序列号',
   manufacturer: '制造商',
   category: '设备类别',
-  status: '状态(在用/闲置/维修/报废)',
+  status: '',
   purchaseDate: '购买日期',
   warrantyExpiry: '保修到期日',
   price: '购买价格',
@@ -133,7 +138,7 @@ const form = ref({
     // 相关附件(图片、文档等)
   ],
   notes: '备注信息',
-  createdAt: '创建时间',
+  createdAt: '',
   updatedAt: '最后更新时间',
   createdBy: '创建人',
   lastUpdatedBy: '最后更新人',
@@ -162,13 +167,34 @@ const getParams = (form: any, params: any[] = []) => {
   })
   return params
 }
-console.log(getParams(form.value))
 
+const rules = reactive({
+  id: [{ required: true, message: '请输入设备ID', trigger: 'blur' }],
+  status: [{ required: true, message: '请选择设备状态', trigger: 'blur' }],
+  createdAt: [{ required: true, message: '请输入创建时间', trigger: 'blur' }],
+})
+
+const errors = ref([])
+
+const handleSubmit = () => {
+  formRef.value.validate((valid: boolean, fields: any) => {
+    errors.value = []
+    if (valid) {
+    } else {
+
+      for (const key in fields) {
+        errors.value.push(fields[key][0].field)
+      }
+    }
+  })
+
+}
 </script>
 
 <style lang='scss' scoped>
 .form-anchor {
   display: flex;
-
+  justify-content: space-between;
+  
 }
 </style>

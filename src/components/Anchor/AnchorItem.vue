@@ -10,6 +10,7 @@
         :disabled="params.disabled"
       >
         {{ params.label }}
+        <span v-show="errorsHref.includes(params.href)" class="anchor-error">×</span>
       </a>
     </div>
     <AnchorItem   v-if="params.children && params.children.length > 0"  
@@ -22,6 +23,7 @@
 
 <script setup lang='ts'>
 import { ParamsType } from './type'
+import { computed } from 'vue'
 import { defineProps, PropType } from 'vue'
 import { ref } from 'vue'
 
@@ -37,7 +39,19 @@ const props = defineProps({
     type: String,
     requered: true,
     default:''
+  },
+  errors: {
+    type: Array as PropType<string[]>,
+    default: () => [],
+    required: false,
   }
+})
+
+const errorsHref = computed(() => {
+  const result = props.errors.map(error => {
+    return `#${error}`
+  })
+  return result
 })
 
 </script>
@@ -69,6 +83,10 @@ const props = defineProps({
 .active-link {
   color: #409eff;
 }
-
+.anchor-error {
+  margin-left: 5px;
+  color:red;
+  font-size: 16px;
+}
 
 </style>

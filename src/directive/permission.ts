@@ -4,7 +4,6 @@ export const permission = {
     const { value: requiredPermission } = binding;
 
     const userPermission = JSON.parse(localStorage.getItem('permission')) ;
-        console.log(requiredPermission, userPermission)
     if(!userPermission) return;
     const permissionConfig = {
       'user': { level: 1 },
@@ -21,7 +20,6 @@ export const permission = {
       if(userConfig.level > requiredConfig.level) return true;
       return userConfig.inherits?.includes(permission) || false;
     }
-    console.log(hasPermission(userPermission,requiredPermission))
     if(!hasPermission(userPermission,requiredPermission)) {
       el.parentNode?.removeChild(el);
     }
