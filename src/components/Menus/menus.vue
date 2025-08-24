@@ -74,7 +74,7 @@ const menus = ref<MenuItem[]>([
         title: '自定义指令控制',
         path: '/permissionForm',
         icon: 'icon-form-permission',
-      }
+      },
     ],
   },
   {
@@ -92,6 +92,30 @@ const menus = ref<MenuItem[]>([
         title: '字体自适应',
         path: '/chartAdapt',
         icon: 'icon-chart-adapt',
+      },
+    ],
+  },
+  {
+    title: 'Select',
+    icon: 'icon-select',
+    path: '/select',
+    children: [
+      {
+        title: '懒加载缓存下拉框',
+        path: '/lazySelect',
+        icon: 'icon-select-lazy',
+      },
+    ],
+  },
+  {
+    title: 'Dialog',
+    icon: 'icon-dialog',
+    path: '/dialog',
+    children: [
+      {
+        title: '动态弹窗',
+        path: '/dynamicDialog',
+        icon: 'icon-dialog-dynamic',
       },
     ],
   },

@@ -11,12 +11,12 @@ const router = createRouter({
     {
       path: '/scrollError',
       name: 'ScrollError',
-      component: () => import('@/views/Form/ScrollError/ScrollError.vue')
+      component: () => import('@/views/Form/ScrollError/ScrollError.vue'),
     },
     {
       path: '/formPage',
       name: 'FormPage',
-      component: () => import('@/views/Form/FormPage/FormPage.vue')
+      component: () => import('@/views/Form/FormPage/FormPage.vue'),
     },
     {
       path: '/formAnchor',
@@ -26,12 +26,22 @@ const router = createRouter({
     {
       path: '/permissionForm',
       name: 'PermissionForm',
-      component: () => import('@/views/Form/PermissionForm/PermissionForm.vue')
+      component: () => import('@/views/Form/PermissionForm/PermissionForm.vue'),
     },
     {
       path: '/chartAdapt',
       name: 'ChartAdapt',
       component: () => import('@/views/Chart/ChartAdapt/ChartAdapt.vue'),
+    },
+    {
+      path: '/lazySelect',
+      name: 'LazySelect',
+      component: () => import('@/views/Select/LazySelect/LazySelect.vue'),
+    },
+    {
+      path: '/dynamicDialog',
+      name: 'DynamicDialog',
+      component: () => import('@/views/Dialog/DynamicDialog/DynamicDialog.vue'),
     },
   ],
 })
