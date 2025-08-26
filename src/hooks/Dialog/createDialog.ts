@@ -1,8 +1,8 @@
-import { createApp, h, ref, watch, reactive, isRef, isReactive } from 'vue'
+import { createApp, h, ref, watch, reactive, isRef, isReactive, VNode } from 'vue'
 import { ElDialog, ElLoading, ElMessage, type DialogProps } from 'element-plus'
 
 interface CustomRequiredParams {
-  status: number //0:init 1:loading 2:success 3:error
+  //status: number //0:init 1:loading 2:success 3:error
 }
 
 // 关键修复：移除属性的readonly修饰符，使它们可写
@@ -23,13 +23,15 @@ export type DialogConfig = Partial<SafeDialogProps> & CustomRequiredParams
  * @description: 函数时弹框，将弹窗Promise化
  * @param {any} component 弹窗组件
  * @param {any} config 弹窗组件参数
+ * @param {Record<string,any>} props 组件需要的props
+ * @param { Record<string , VNode>} slots 组件需要的插槽
  * @return {Promise} 弹窗Promise
  * @example
- *  const dialog = createDialog(component, config)
- *  await dialog()
+ *  const dialog = createDialog(component, config,{ name: '张三' }, { default: () => () => { return h(slot)} })
+ *  dialog()
  */
 
-export function createDialog(component: any, config: DialogConfig) {
+export function createDialog(component: any, config: DialogConfig, props: Record<string, any> = {}, slots: Record<string, VNode | (() => VNode)> = {}) {
   /* 校验参数 */
   const validateParams = () => {
     if (!component) {
@@ -37,9 +39,6 @@ export function createDialog(component: any, config: DialogConfig) {
     }
     if (!config) {
       throw new Error('创建弹窗失败：缺少必须config参数')
-    }
-    if (typeof config.status !== 'number' || config.status < 0 || config.status > 3) {
-      throw new Error('创建弹窗失败：config参数status必须为0-3的数字')
     }
   }
   validateParams()
@@ -73,13 +72,36 @@ export function createDialog(component: any, config: DialogConfig) {
             throw new Error('创建弹窗失败：config参数必须为对象')
           }
 
+            // 合并基础属性和传入的props
+          const componentProps = {
+            ...props,
+            onCancel: () => {
+              reject({
+                type: 'dialogCancel',
+              })
+              dialogUnMount()
+            },
+            onOk: (data: any) => {
+              resolve(data)
+              dialogUnMount()
+            },
+            config: currentConfig,
+          }
+
+          // 创建带插槽的组件
+          const componentWithSlots = h(
+            component,
+            componentProps,
+            // 处理插槽
+            slots
+          )
+
           return h(
             ElDialog,
             {
               modelValue: visiable.value,
               ...currentConfig,
               beforeClose: (done: Function) => {
-                console.log('before close')
                 done()
               },
               onClose: () => {
@@ -95,20 +117,7 @@ export function createDialog(component: any, config: DialogConfig) {
               },
             },
             {
-              default: () =>
-                h(component, {
-                  onCancel: () => {
-                    reject({
-                      type: 'dialogCancel',
-                    })
-                    dialogUnMount()
-                  },
-                  onOk: (data: any) => {
-                    resolve(data)
-                    dialogUnMount()
-                  },
-                  config: currentConfig,
-                }),
+              default: () => componentWithSlots,
             },
           )
         },
