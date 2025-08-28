@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    /* 表单 */
     {
       path: '/formCache',
       name: 'FormCache',
@@ -43,6 +44,28 @@ const router = createRouter({
       name: 'DynamicDialog',
       component: () => import('@/views/Dialog/DynamicDialog/DynamicDialog.vue'),
     },
+    /* 表格 */
+    {
+      path: '/superTable',
+      name: 'SuperTable',
+      component: () => import('@/views/Table/SuperTable/SuperTable.vue'),
+    },
+    {
+      path: '/colWidth',
+      name: 'ColWidth',
+      component: () => import('@/views/Table/ColWidth/ColWidth.vue'),
+    },
+    {
+      path: '/removeRow',
+      name: 'RemoveRow',
+      component: () => import('@/views/Table/Remove/RemoveRow.vue')
+    },
+    {
+      path: '/selectRows',
+      name: 'SelectRows',
+      component: () => import('@/views/Table/SelectRows/SelectRows.vue')
+    }
+
   ],
 })
 

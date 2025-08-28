@@ -45,23 +45,26 @@ export function createDialog(component: any, config: DialogConfig, props: Record
 
   return () => {
     return new Promise((resolve, reject) => {
-      const visiable = ref(true)
+      const visible = ref(true)
       /* 创建响应式配置副本 */
       const reactiveConfig = isRef(config)
         ? config
         : isReactive(config)
           ? config
           : reactive<DialogConfig>({ ...config })
-      const dialogUnMount = () => {
-        visiable.value = false
-      }
+
       /* 1.创建节点 */
       let el = document.createElement('div')
+
+      const dialogUnMount = () => {
+        visible.value = false
+        if (!el) return
+        el.parentNode && el.parentNode.removeChild(el) 
+      }
       /* 2.创建实例 */
       const app = createApp({
         onUnmounted() {
-          if (!el) return
-          el.parentNode && el.parentNode.removeChild(el)
+          console.log('弹窗已卸载')
         },
         render() {
           const currentConfig = isRef(reactiveConfig)
@@ -76,7 +79,7 @@ export function createDialog(component: any, config: DialogConfig, props: Record
           const componentProps = {
             ...props,
             onCancel: () => {
-              reject({
+              resolve({
                 type: 'dialogCancel',
               })
               dialogUnMount()
@@ -99,13 +102,13 @@ export function createDialog(component: any, config: DialogConfig, props: Record
           return h(
             ElDialog,
             {
-              modelValue: visiable.value,
+              modelValue: visible.value,
               ...currentConfig,
               beforeClose: (done: Function) => {
                 done()
               },
               onClose: () => {
-                reject({
+                resolve({
                   type: 'dialogClose',
                 })
                 dialogUnMount()

@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="activeMenu">
+  <el-menu :default-active="activeMenu"  >
     <template v-for="(menu, i) in menus" :key="menu.title">
       <!-- 可点击的一级菜单（无 children） -->
       <el-menu-item v-if="!menu.children" :index="menu.path" @click="toggleView(menu.path)">
@@ -28,12 +28,29 @@
 
 <script setup lang="ts">
 import { ref, reactive, Ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { MenuItem } from './type'
+import { watch } from 'vue'
+
 
 const router = useRouter()
+const route = useRoute()
+const activeMenu = ref()
 
-const activeMenu = ref('/')
+
+
+watch(
+  () => route.path,
+  (newPath) => {
+    activeMenu.value = newPath
+  },
+  {
+    immediate: true
+  }
+)
+
+
+
 const toggleView = (view: string) => {
   activeMenu.value = view
   router.push(view)
@@ -81,7 +98,28 @@ const menus = ref<MenuItem[]>([
     icon: 'icon-table',
     path: '/table',
     title: 'Table',
-    children: [],
+    children: [
+      {
+        title: '超级表格',
+        path: '/superTable',
+        icon: 'icon-table-super',
+      },
+      {
+        title: '表格列宽拖拉',
+        path: '/colWidth',
+        icon: 'icon-table-col-width',
+      },
+      {
+        title: '表格行拖拽',
+        path: '/removeRow',
+        icon: 'icon-table-romove-row'
+      },
+      {
+        title: '表格多勾选',
+        path: '/selectRows',
+        icon: 'icon-table-select-rows'
+      }
+    ],
   },
   {
     title: 'Chart',
