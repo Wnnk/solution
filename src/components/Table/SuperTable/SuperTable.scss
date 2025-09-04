@@ -1,3 +1,5 @@
+@import '@/style/css/variables.scss';
+
 .header-wrapper {
   display: flex;
   justify-content: space-between;
@@ -7,6 +9,11 @@
 // 表头单元格hover效果
 ::v-deep .el-table__header th:hover {
   background-color: $table-header-hover-bg; // 浅蓝色背景，可根据需求修改
+}
+
+::v-deep .el-table__column-resize-proxy {
+  background-color: #409eff !important; 
+  width: 2px !important;
 }
 
 .icon-header-detail {

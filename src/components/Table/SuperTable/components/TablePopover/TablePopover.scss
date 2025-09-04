@@ -1,0 +1,20 @@
+@import '@/style/css/variables.scss';
+
+
+.table-popover {
+  padding: 0 2px;
+}
+.table-popover-content-item{
+  display: flex;
+  gap:5px;
+  cursor: pointer;
+  &:hover{
+    background-color: $table-popover-hover-bg;
+  }
+}
+
+.edit-column-name{
+  .edit-span{
+    color:$span-color;
+  }
+}

@@ -8,9 +8,6 @@
       :currentPage="currentPage"
       v-loading="status === 1"
     >
-      <template #header>
-        <div>ceshi1</div>
-      </template>
       <template #empty>
         <div class="empty-wrapper" v-if="status === 2 && tableData.length === 0">暂无数据</div>
         <div v-else-if="status === 3">
@@ -35,6 +32,7 @@ import SuperTable from '@/components/Table/SuperTable/SuperTable.vue'
 import http from '@/http/http'
 import { ColumnType, TableData } from '@/components/Table/SuperTable/type'
 import { ref } from 'vue'
+import { watch } from 'vue'
 
 const status = ref(0) // 0: 初始状态, 1: 加载中, 2: 加载成功, 3: 加载失败
 
@@ -46,23 +44,33 @@ const loadColumns = async (url: string, params?: any) => {
     columns.value = res
   } catch (error) {
     status.value = 3
+    console.log(status.value, error)
   }
 }
 
 const columns = ref<ColumnType[]>([])
 loadColumns('/getColumns')
 
-const pageSize = ref(0)
+
+
+
+
+
+const pageSize = ref(10)
 const currentPage = ref(1)
 const total = ref(0)
 const tableData = ref<TableData[] | []>([])
+
+
+
 
 const loadData = async (url: string, params?: any) => {
   try {
     status.value = 1
     const res = await http.get(url, { params })
     const data = res.data.list as TableData[]
-    tableData.value = data
+    tableData.value = data;
+    total.value = res.data.total;
     status.value = 2
   } catch (error) {
     status.value = 3

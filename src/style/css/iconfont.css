@@ -1,39 +1,90 @@
 @font-face {
-  font-family: 'iconfont'; /* Project id 5000676 */
-  src:
-    url('//at.alicdn.com/t/c/font_5000676_0zd1cjrwd8la.woff2?t=1756608028872') format('woff2'),
-    url('//at.alicdn.com/t/c/font_5000676_0zd1cjrwd8la.woff?t=1756608028872') format('woff'),
-    url('//at.alicdn.com/t/c/font_5000676_0zd1cjrwd8la.ttf?t=1756608028872') format('truetype');
+  font-family: "iconfont"; /* Project id 5000676 */
+  src: url('//at.alicdn.com/t/c/font_5000676_lijc60uwiq.woff2?t=1756991404288') format('woff2'),
+       url('//at.alicdn.com/t/c/font_5000676_lijc60uwiq.woff?t=1756991404288') format('woff'),
+       url('//at.alicdn.com/t/c/font_5000676_lijc60uwiq.ttf?t=1756991404288') format('truetype');
 }
 
 .iconfont {
-  font-family: 'iconfont' !important;
+  font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-cell-super:before {
+  content: "\e6f6";
+}
+
+.icon-cell-high:before {
+  content: "\e64b";
+}
+
+.icon-cell-low:before {
+  content: "\e64c";
+}
+
+.icon-cell-mid:before {
+  content: "\e64d";
+}
+
+.icon-show-column:before {
+  content: "\e653";
+}
+
+.icon-delete-column:before {
+  content: "\e6a0";
+}
+
+.icon-insert-column-right:before {
+  content: "\e65a";
+}
+
+.icon-insert-column-left:before {
+  content: "\e65b";
+}
+
+.icon-modify-column:before {
+  content: "\e8cf";
+}
+
+.icon-hide-column:before {
+  content: "\e65d";
+}
+
+.icon-freeze-column:before {
+  content: "\e63d";
+}
+
+.icon-freeze-last-column:before {
+  content: "\e859";
+}
+
+.icon-freeze-first-column:before {
+  content: "\e85a";
+}
+
 .icon-header-detail:before {
-  content: '\e771';
+  content: "\e771";
 }
 
 .icon-select:before {
-  content: '\e639';
+  content: "\e639";
 }
 
 .icon-home:before {
-  content: '\e603';
+  content: "\e603";
 }
 
 .icon-table:before {
-  content: '\e63e';
+  content: "\e63e";
 }
 
 .icon-form:before {
-  content: '\e665';
+  content: "\e665";
 }
 
 .icon-chart:before {
-  content: '\eb95';
+  content: "\eb95";
 }

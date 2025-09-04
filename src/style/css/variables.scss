@@ -6,13 +6,18 @@ $background-color: #ffffff;
 
 /* 背景变量 */
 $table-header-hover-bg: #f5f7fa;
+$table-popover-hover-bg: #f5f7fa;
+$icon-hover-bg: #e3e4e6;
+
+/* 激活状态变量 */
+$active-color: #409eff;
+
 
 /* 边框变量 */
 $table-header-hover-border: #dcdfe6;
 
 // 字体变量
-$main-font: 'Arial', sans-serif;
-$heading-font: 'Georgia-serif', serif;
+$span-color: #909399;
 
 // 间距变量
 $spacing-sm: 8px;
