@@ -1,8 +1,13 @@
 <template>
-  <el-popover placement="bottom" :width="300" trigger="click" @hide="popoverClose" >
+  <el-popover placement="bottom" :width="300" trigger="click" @hide="popoverClose">
     <div class="table-popover">
       <div class="table-popover-content" v-if="!isEditColumnName">
-        <div class="table-popover-content-item" v-for="{ label, value, icon } in list" :key="value" @click="selectFn(value)">
+        <div
+          class="table-popover-content-item"
+          v-for="{ label, value, icon } in list"
+          :key="value"
+          @click="selectFn(value)"
+        >
           <i :class="['item-icon', 'iconfont', icon]"></i>
           <div>{{ label }}</div>
         </div>
@@ -16,20 +21,19 @@
         <el-button type="primary" @click="submitPopover">确定</el-button>
       </div>
     </div>
-   
+
     <template #reference>
       <slot></slot>
     </template>
   </el-popover>
-
 </template>
 
 <script setup lang="ts">
 import { ref, computed, inject, Ref, toRaw } from 'vue'
-import { ColumnType } from '../../type';
-import { UseColumns }  from '@/components/Table/SuperTable/EditColumns'
-import _ from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
+import { ColumnType } from '../../type'
+import { UseColumns } from '@/components/Table/SuperTable/type'
+import _ from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 const props = defineProps({
   column: {
@@ -38,43 +42,41 @@ const props = defineProps({
   },
   visible: {
     type: Boolean,
-  }
+  },
 })
-
 
 const selectFn = (value: string) => {
   switch (value) {
-    case'modify':
-      isEditColumnName.value = true;
-      break;
+    case 'modify':
+      isEditColumnName.value = true
+      break
     case 'hide':
-      hideOneColumn();
-      break;
+      hideOneColumn()
+      break
     case 'freeze':
-      break;
+      break
     case 'freeze-first':
-      freezeToFirstColumn();
-      break;
+      freezeToFirstColumn()
+      break
     case 'freeze-last':
-      freezeToLastColumn();
-      break;
+      freezeToLastColumn()
+      break
     case 'insert-left':
-      insertToLeftColumn();
-      break;
+      insertToLeftColumn()
+      break
     case 'insert-right':
-      insertToRightColumn();
-      break;
+      insertToRightColumn()
+      break
     case 'delete':
-      deleteOneColumn();
-      break;
+      deleteOneColumn()
+      break
     default:
   }
 }
 
-
 /************************************** 修改字段/列*********************************  */
 const editColumn = ref(_.cloneDeep(props.column))
-const isEditColumnName = ref(false);
+const isEditColumnName = ref(false)
 
 const list = [
   {
@@ -119,9 +121,7 @@ const list = [
   },
 ]
 
-
-const useColumns = inject('useColumns') as UseColumns;
-
+const useColumns = inject('useColumns') as UseColumns
 
 // 取消操作：重置为原始基准值
 const popoverClose = () => {
@@ -131,7 +131,7 @@ const popoverClose = () => {
 const submitPopover = () => {
   const editVal = _.cloneDeep(editColumn.value)
   const updateColumns = useColumns.editColumn(useColumns.columns, editVal.key, editVal)
-  useColumns.updateColumns(updateColumns);
+  useColumns.updateColumns(updateColumns)
   popoverClose()
 }
 
@@ -141,7 +141,6 @@ const hideOneColumn = () => {
   useColumns.updateColumns(updateColumns)
   popoverClose()
 }
-
 
 /**************************************** 固定列首 ***************************************  */
 const freezeToFirstColumn = () => {
@@ -160,7 +159,7 @@ const freezeToLastColumn = () => {
 const insertToLeftColumn = () => {
   const newColumn = {
     label: '新列',
-    key:  uuidv4(),
+    key: uuidv4(),
     visible: true,
   }
   const updateColumns = useColumns.insertLeftColumn(useColumns.columns, props.column.key, newColumn)
@@ -171,10 +170,14 @@ const insertToLeftColumn = () => {
 const insertToRightColumn = () => {
   const newColumn = {
     label: '新列',
-    key:  uuidv4(),
+    key: uuidv4(),
     visible: true,
   }
-  const updateColumns = useColumns.insertRightColumn(useColumns.columns, props.column.key, newColumn)
+  const updateColumns = useColumns.insertRightColumn(
+    useColumns.columns,
+    props.column.key,
+    newColumn,
+  )
   useColumns.updateColumns(updateColumns)
   popoverClose()
 }
@@ -184,9 +187,8 @@ const deleteOneColumn = () => {
   useColumns.updateColumns(updateColumns)
   popoverClose()
 }
-
 </script>
 
 <style lang="scss" scoped>
-@use './TablePopover.scss'
+@use './TablePopover.scss';
 </style>

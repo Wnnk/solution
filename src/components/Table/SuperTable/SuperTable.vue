@@ -5,7 +5,14 @@
         <TableHeader />
       </el-header>
       <el-main>
-        <el-table :data="data" border v-bind="$attrs" ref="tableRef" :key="tableKey" :row-style="{height: rowHeight + 'px'}">
+        <el-table
+          :data="data"
+          border
+          v-bind="$attrs"
+          ref="tableRef"
+          :key="tableKey"
+          :row-style="{ height: rowHeight + 'px' }"
+        >
           <el-table-column
             v-for="column in renderColumns"
             :key="column.key"
@@ -19,16 +26,16 @@
               <div class="header-wrapper">
                 <div>{{ column.label }}</div>
                 <div @click="openPopover">
-                  <TablePopover :column="_.cloneDeep(column)"  >
+                  <TablePopover :column="_.cloneDeep(column)">
                     <i class="iconfont icon-header-detail"></i>
                   </TablePopover>
                 </div>
               </div>
             </template>
           </el-table-column>
-            <template #empty>
-              <slot name="empty"></slot>
-            </template>
+          <template #empty>
+            <slot name="empty"></slot>
+          </template>
         </el-table>
       </el-main>
       <el-footer>
@@ -41,15 +48,13 @@
         ></el-pagination>
       </el-footer>
     </el-container>
-    
-    <div v-for="column in columns" :key="column.key">
-      {{ column.label }} --- {{column.visible}} -- {{ column.fixed }} 
-    </div>
+
+    <div>{{ sortOrder }} -- {{ sortColumnKey }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide,watch,nextTick } from 'vue'
+import { ref, computed, provide, watch, nextTick } from 'vue'
 import TableHeader from './components/TableHeader/TableHeader.vue'
 import { ColumnType, TableData } from './type'
 import TablePopover from './components/TablePopover/TablePopover.vue'
@@ -64,10 +69,10 @@ import {
   deleteColumn,
   toggleColumn,
 } from './EditColumns'
-import { ElTable } from 'element-plus'; // 导入类型
+import { updateSortData, updateSortOrder, updateSortColumn } from './SortColumns'
+import { ElTable } from 'element-plus' // 导入类型
 
-
-const tableRef = ref<InstanceType<typeof ElTable> | null>(null);
+const tableRef = ref<InstanceType<typeof ElTable> | null>(null)
 const tableKey = ref(0)
 const props = defineProps({
   data: {
@@ -89,9 +94,6 @@ const props = defineProps({
   },
 })
 
-
-
-
 /* popover相关 */
 const handerPopoverVisible = ref(false)
 const openPopover = () => {
@@ -109,12 +111,10 @@ watch(
   () => props.columns,
   (newVal) => {
     tableKey.value++
-  }
+  },
 )
 
-
-const emit = defineEmits(['update:columns'])
-
+const emit = defineEmits(['update:columns', 'update:data'])
 
 provide('useColumns', {
   columns: computed(() => props.columns),
@@ -129,24 +129,34 @@ provide('useColumns', {
   deleteColumn,
   updateColumns: (columns: ColumnType[]) => {
     emit('update:columns', columns)
-  }
+  },
 })
 
-
-const rowHeight = ref(16)
+const rowHeight = ref(63)
 provide('useRowHeight', {
   rowHeight,
   updateRowHeight: (height: number) => {
     rowHeight.value = height
-  }
+  },
 })
 
+const sortOrder = ref('asc')
+const sortColumnKey = ref('')
 
+provide('useSort', {
+  sortOrder,
+  sortColumnKey,
+  updateSortData,
+  updateSortOrder,
+  updateSortColumn,
+})
 
-
-
-
-
+provide('useData', {
+  data: computed(() => props.data),
+  updateData: (data: TableData[]) => {
+    emit('update:data', data)
+  },
+})
 </script>
 
 <style lang="scss" scoped>
