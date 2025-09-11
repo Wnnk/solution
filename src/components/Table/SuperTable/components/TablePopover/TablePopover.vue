@@ -158,6 +158,7 @@ const freezeToLastColumn = () => {
 /**************************************** 向左插入字段/列 ********************************  */
 const insertToLeftColumn = () => {
   const newColumn = {
+    id: uuidv4(),
     label: '新列',
     key: uuidv4(),
     visible: true,
@@ -169,6 +170,7 @@ const insertToLeftColumn = () => {
 /**************************************** 向右插入字段/列 ********************************  */
 const insertToRightColumn = () => {
   const newColumn = {
+    id: uuidv4(),
     label: '新列',
     key: uuidv4(),
     visible: true,

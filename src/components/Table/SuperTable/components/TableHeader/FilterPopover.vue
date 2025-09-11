@@ -4,7 +4,7 @@
     width="500"
     trigger="click"
     @hide="handleCancel"
-    :teleported="false"
+    v-model:visible="visible"
   >
     <div class="filter-popover">
       <div class="filter-title">设置筛选条件</div>
@@ -31,8 +31,9 @@
         </div>
       </div>
       <div class="filter-footer">
-        <el-button type="primary" @click="handleFilter">确定</el-button>
         <el-button @click="handleCancel">取消</el-button>
+        <el-button @click="reset">重置</el-button>
+        <el-button type="primary" @click="handleFilter">确定</el-button>
       </div>
     </div>
 
@@ -44,8 +45,10 @@
 
 <script setup lang="ts">
 import { ref, computed, inject, onMounted } from 'vue'
-import { UseColumns } from '@/components/Table/SuperTable/type'
+import { UseColumns, UseData, UseFilterStore} from '@/components/Table/SuperTable/type'
 const useColumns = inject('useColumns') as UseColumns
+const useFilterStore = inject('useFilterStore') as UseFilterStore
+
 const filteroptions = computed(() => {
   const columns = useColumns.columns.value
   const result = columns.map((item) => {
@@ -54,8 +57,11 @@ const filteroptions = computed(() => {
   return result
 })
 
-const filterKey = ref()
+const visible = ref(false)
 
+/* 列的key */
+const filterKey = ref()
+/* 列的过滤参数 */
 const filterParameters = [
   {
     label: '等于',
@@ -82,22 +88,65 @@ const filterParameters = [
     value: 'notnull',
   },
 ]
+/* 选择的列的过滤参数 */
 const selectParameterKey = ref('eq')
+/* 用户输入参数 */
 const selectParameter = ref()
 
-const handleFilter = () => {}
+const handleFilter = () => {
+  useFilterStore.updateFilterStore({
+    sort:useFilterStore.filterStore.value.sort,
+    filter: {
+      columnKey: filterKey.value,
+      parameterKey: selectParameterKey.value,
+      value: selectParameter.value,
+    },
+    group: {
+      columnKey: "",
+    }
+  })
+  visible.value = false
+}
 
-const handleCancel = () => {}
+const reset = () => {
+  useFilterStore.updateFilterStore({
+    sort:useFilterStore.filterStore.value.sort,
+    filter: {
+      columnKey: "",
+      parameterKey: "eq",
+      value: ""
+    },
+    group: {
+      columnKey: "",
+    }
+  })
+  filterKey.value = ""
+  selectParameterKey.value = 'eq'
+  selectParameter.value = ""
+}
+
+const handleCancel = () => {
+  visible.value = false
+}
 </script>
 
 <style lang="scss" scoped>
 .filter-popover {
   display: grid;
   grid-template-rows: auto 1fr;
+  position: relative;
+}
+.filter-title{
+  color:$span-color;
 }
 .filter-content {
   display: grid;
   grid-template-columns: 100px 100px 1fr;
   grid-gap: 10px;
+}
+.filter-footer{
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 20px 5px 0;
 }
 </style>

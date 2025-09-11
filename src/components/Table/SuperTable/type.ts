@@ -3,7 +3,7 @@ import { Ref } from 'vue'
 type ColumnFixed = 'left' | 'right'
 
 export type ColumnType = {
-  id: number
+  id: string
   key: string
   label?: string
   width?: number
@@ -14,7 +14,7 @@ export type ColumnType = {
 }
 
 export type TableData = {
-  id: number
+  id: string
   cusName: string
   proName: string
   status: string
@@ -25,6 +25,27 @@ export type TableData = {
   projectEstimatedCost: number
   projectPaidCost: number
   createTime: string
+}
+
+
+export type Sort = {
+  order: string
+  columnKey: string
+}
+export type Filter = {
+  columnKey: string
+  parameterKey: string
+  value: string
+}
+
+export type Group = {
+  columnKey: string
+}
+
+export type FilterStore = {
+  sort: Sort,
+  filter: Filter
+  group: Group
 }
 
 export type UseRowHeight = {
@@ -58,4 +79,17 @@ export type UseSort = {
 export type UseData = {
   data: Ref<TableData[]>
   updateData: (data: TableData[]) => void
+}
+
+
+export type UseFilterStore = {
+  filterStore:Ref<FilterStore>
+  updateFilterStore: (newFilter: FilterStore) => FilterStore
+}
+
+export type UseDraggable = {
+  isDraggable: Ref<boolean>
+  updateDraggable: (isDraggable: boolean) => void
+  dragColumn:(tabeleRef: Ref<HTMLTableElement>) => void
+  makeColumnsDraggable:(headerSelector: string, columns: ColumnType[], hander: string, onColumnsSorted: (newColumns: ColumnType[]) => void) => void
 }

@@ -59,6 +59,9 @@ const cellHeightArray = [
 </script>
 
 <style lang="scss" scoped>
+.cell-height-popover-title{
+  color:$span-color;
+}
 .cell-height-popover-item {
   font-size: 18px;
   display: flex;

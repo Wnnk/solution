@@ -5,6 +5,9 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  .icon-drag{
+    cursor: move;
+  }
 }
 // 表头单元格hover效果
 ::v-deep .el-table__header th:hover {

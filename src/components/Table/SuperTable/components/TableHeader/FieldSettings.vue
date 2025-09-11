@@ -8,10 +8,13 @@
       <div class="field-settings-fixed">
         <div class="field-settings-fixed-item" v-for="column in columns">
           <span>{{ column.label }}</span>
-          <i :class="['iconfont',column.visible?'icon-show-column':'icon-hide-column', 'column-icon']" @click="toggleColumnVisible(column.key)"></i>
+          <i :class="['iconfont',column.visible?'icon-show-column':'icon-hide-column', 'column-icon']" 
+            @click="toggleColumnVisible(column.key)" 
+           
+          ></i>
         </div>
         <div class="field-settings-add-column">
-          <div class="field-settings-add-column-item" @click="addColumnToLast">
+          <div class="field-settings-add-column-item" @click="addColumnToLast" >
             <span class="add-column">+</span>
             <span class="add-column">新增字段/列</span>
           </div>
@@ -28,19 +31,21 @@
 
 <script setup lang='ts'>
 import { ref,inject, computed } from 'vue'
-import { UseColumns,  }  from '@/components/Table/SuperTable/EditColumns'
+import { UseColumns  }  from '@/components/Table/SuperTable/type'
 import { v4 as uuidv4 } from 'uuid'
 
 const useColumns = inject('useColumns') as UseColumns
 const columns = computed(() => useColumns.columns.value)
 
 const toggleColumnVisible = (key: string) => {
+  
   const newColumns = useColumns.toggleColumn(columns, key);
   useColumns.updateColumns(newColumns);
 }
 const addColumnToLast = () => {
   const len = columns.value.length;
   const updateColumns = useColumns.insertRightColumn(columns, columns.value[len-1].key, {
+    id: `${uuidv4()}`,
     key: `${uuidv4()}`,
     label: `新增字段${len}`,
     visible: true,
@@ -53,6 +58,9 @@ const addColumnToLast = () => {
 <style lang='scss' scoped>
 .field-settings{
   padding: 10px;
+}
+.field-settings-title{
+  color:$span-color;
 }
 
 .field-settings-content {

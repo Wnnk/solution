@@ -3,7 +3,7 @@
     <div class="sort-popover">
       <div class="sort-popover-title">设置排序条件</div>
       <div class="sort-popover-content">
-        <el-select v-model="sortColumnKey" placeholder="选择条件" :teleported="false">
+        <el-select v-model="originalSort.columnKey" placeholder="选择条件" :teleported="false">
           <el-option
             v-for="column in columns"
             :key="column.key"
@@ -13,13 +13,13 @@
         </el-select>
         <div class="sort-switch">
           <div
-            :class="['sort-asc', { 'sort-active': sortOrder === 'asc' }]"
+            :class="['sort-asc', { 'sort-active': originalSort.order === 'asc' }]"
             @click="toggleSortOrder('asc')"
           >
             <span>选项顺序</span>
           </div>
           <div
-            :class="['sort-desc', { 'sort-active': sortOrder === 'desc' }]"
+            :class="['sort-desc', { 'sort-active': originalSort.order === 'desc' }]"
             @click="toggleSortOrder('desc')"
           >
             <span>选项降序</span>
@@ -28,6 +28,7 @@
       </div>
       <div class="sort-popover-footer">
         <el-button @click="handleCancel">取消</el-button>
+        <el-button @click="reset">重置</el-button>
         <el-button type="primary" @click="handleSort">应用</el-button>
       </div>
     </div>
@@ -39,11 +40,15 @@
 
 <script setup lang="ts">
 import { ref, computed, inject, onUpdated, isRef } from 'vue'
-import { UseColumns, UseSort, UseData } from '@/components/Table/SuperTable/type'
+import { UseColumns,UseFilterStore,FilterStore } from '@/components/Table/SuperTable/type'
 import _ from 'lodash'
 
 const useColumns = inject('useColumns') as UseColumns
-const useSort = inject('useSort') as UseSort
+const useFilterStore = inject('useFilterStore') as UseFilterStore
+
+const originalSort = ref<{columnKey: string; order: string}>({columnKey: '', order: 'asc'})
+
+
 const columns = computed(() => {
   const columns = useColumns.columns.value
   return columns.filter((column) => {
@@ -52,44 +57,60 @@ const columns = computed(() => {
     }
   })
 })
-const useData = inject('useData') as UseData
 
-const sortColumnKey = computed({
-  get: () => useSort.sortColumnKey.value,
-  set: (value: string) => {
-    const sort = useSort.sortColumnKey
-    useSort.updateSortColumn(sort, value)
-  },
-})
-const sortOrder = computed({
-  get: () => useSort.sortOrder.value || 'asc',
-  set: (value: string) => {
-    const sort = useSort.sortOrder
-    useSort.updateSortOrder(sort, value)
-  },
-})
 
-const toggleSortOrder = (order: string) => {
-  if (useSort.sortOrder.value !== order) {
-    useSort.updateSortOrder(useSort.sortOrder, order)
+// 切换排序方向
+const toggleSortOrder = (order: 'asc' | 'desc') => {
+
+  if(originalSort.value.order !== order) {
+    originalSort.value.order = order
   }
 }
 
+
 const visible = ref(false)
+// 取消操作，恢复原始状态
 const handleCancel = () => {
+  originalSort.value = {
+    columnKey: '',
+    order: 'asc'
+  }
   visible.value = false
 }
 
+const reset =() => {
+  useFilterStore.updateFilterStore({
+    sort: {
+      columnKey: '',
+      order: 'asc'
+    },
+    filter: useFilterStore.filterStore.value.filter,
+    group: useFilterStore.filterStore.value.group
+  })
+  originalSort.value = {
+    columnKey: '',
+    order: 'asc'
+  }
+}
+
+
 const handleSort = () => {
-  const key = sortColumnKey.value
-  const data = _.cloneDeep(useData.data.value)
-  const newData = useSort.updateSortData(data, key, sortOrder.value)
-  useData.updateData(newData)
+  useFilterStore.updateFilterStore({
+    sort: {
+      columnKey: originalSort.value.columnKey,
+      order: originalSort.value.order
+    },
+    filter: useFilterStore.filterStore.value.filter,
+    group: useFilterStore.filterStore.value.group
+  })
   visible.value = false
 }
 </script>
 
 <style lang="scss" scoped>
+.sort-popover-title{
+  color: $span-color;
+}
 .sort-popover-content {
   display: grid;
   grid-template-columns: 100px 1fr;

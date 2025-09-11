@@ -1,6 +1,7 @@
 import { Ref } from 'vue'
 import { ColumnType, TableData } from '@/components/Table/SuperTable/type'
 import _ from 'lodash'
+import Sortable from 'sortablejs';
 
 /**
  * @description: 更新排序方式
@@ -12,6 +13,7 @@ import _ from 'lodash'
 
 export const updateSortData = (data: TableData[], key: string, order: string = 'asc') => {
   const soredData = _.cloneDeep(data)
+
   if (!key) return soredData
 
   soredData.sort((a, b) => {
@@ -49,24 +51,11 @@ export const updateSortData = (data: TableData[], key: string, order: string = '
   return soredData
 }
 
-/**
- * @description: 更新排序方式
- * @param { Ref<String> } sortOrder - 排序方式
- * @param { Ref<String> } newOrder - 新的排序方式
 
- */
-export const updateSortOrder = (sortOrder: Ref<string>, newOrder: string) => {
-  sortOrder.value = newOrder
-  return sortOrder
-}
 
-/**
- * @description: 更新排序列
- * @param { Ref<String> } sortColumn - 排序字段
- * @param { Ref<String> } newColumn - 新的排序字段
- * @return { sortColumn } - 新的排序字段
- */
-export const updateSortColumn = (sortColumn: Ref<string>, newColumn: string) => {
-  sortColumn.value = newColumn
-  return sortColumn
-}
+
+
+
+
+
+
