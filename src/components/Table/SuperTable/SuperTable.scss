@@ -5,7 +5,7 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  .icon-drag{
+  .icon-drag {
     cursor: move;
   }
 }
@@ -15,7 +15,7 @@
 }
 
 ::v-deep .el-table__column-resize-proxy {
-  background-color: #409eff !important; 
+  background-color: #409eff !important;
   width: 2px !important;
 }
 
@@ -25,4 +25,15 @@
   &:hover {
     border: 1px solid $table-header-hover-border;
   }
+}
+
+/* 为选中的列标题添加样式 */
+:deep(.active-column-header .cell) {
+  background-color: #e6f7ff !important;
+  font-weight: bold;
+  border-left: 2px solid #409eff !important;
+  border-right: 2px solid #409eff !important;
+}
+
+:deep(.el-table__row) {
 }
