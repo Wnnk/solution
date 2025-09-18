@@ -1,5 +1,8 @@
 @import '@/style/css/variables.scss';
 
+.super-table{
+  position: relative;
+}
 .header-wrapper {
   display: flex;
   justify-content: space-between;
@@ -26,6 +29,11 @@
     border: 1px solid $table-header-hover-border;
   }
 }
+
+:deep(.active-cell){
+  border: 1px solid #409eff !important;
+}
+
 
 /* 为选中的列标题添加样式 */
 :deep(.active-column-header .cell) {

@@ -117,7 +117,7 @@ const list = [
   {
     label: '删除字段/列',
     value: 'delete',
-    icon: 'icon-delete-column',
+    icon: 'icon-delete',
   },
 ]
 

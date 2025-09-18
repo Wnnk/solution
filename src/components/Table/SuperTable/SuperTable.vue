@@ -4,26 +4,22 @@
       <el-main>
         <el-table
           :data="renderData"
+          row-key="id"
           border
           v-bind="$attrs"
           ref="tableRef"
           :key="tableKey"
           :row-style="{ height: rowHeight + 'px' }"
           @header-click="selectColumn"
-          :header-cell-class-name="changeColumnStyle"
+          :header-cell-class-name="changeColumnName"
           @cell-click="selectCell"
-          :cell-style="changeCellStyle"
+          :cell-class-name="changeCellName"
+          @cell-contextmenu="openCellMenu"
         >
-          <el-table-column>
+          <el-table-column type='header'>
             <template #header>
               <TableHeader />
             </template>
-            <el-table-column>
-              <div class="">
-                <div class="detail-icon"></div>
-                <div class="add-child-icon"></div>
-              </div>
-            </el-table-column>
             <!-- 动态列 -->
             <el-table-column
               v-for="column in renderColumns"
@@ -45,12 +41,7 @@
                   </div>
                 </div>
               </template>
-              <!-- <template #default="{ row }" v-if="column.type === 'default' || !column.type">
-                <div>
-                  <span>{{ row[column.prop] }}</span>
-                  <div class="detail-icon">1</div>
-                </div>
-              </template> -->
+              
             </el-table-column>
           </el-table-column>
 
@@ -69,15 +60,16 @@
         ></el-pagination>
       </el-footer>
     </el-container>
+    <CellMenu :mouse-position="mousePosition" :is-menu="isMenu" @update:is-menu="updateisMenu" @update:is-detail="updateisDetail"/>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, watch, onUnmounted, nextTick } from 'vue'
+import { ref, computed, provide, watch, onUnmounted, onMounted } from 'vue'
 import TableHeader from './components/TableHeader/TableHeader.vue'
 import { ColumnType, TableData, FilterStore } from './type'
 import TablePopover from './components/TablePopover/TablePopover.vue'
-import { makeColumnsDraggable } from './Draggable'
+import { makeColumnsDraggable } from './utils/Draggable'
 import _ from 'lodash'
 import {
   editColumn,
@@ -88,10 +80,12 @@ import {
   insertRightColumn,
   deleteColumn,
   toggleColumn,
-} from './EditColumns'
-import { updateSortData } from './SortColumns'
-import { updateFilterData } from './FilterColumns'
+} from './utils/EditColumns'
+import { getCellKey } from './utils/SelectCell'
+import { updateSortData } from './utils/SortColumns'
+import { updateFilterData } from './utils/FilterColumns'
 import { ElTable } from 'element-plus' // 导入类型
+import CellMenu from './components/TableDetail/CellMenu.vue'
 
 const tableRef = ref<InstanceType<typeof ElTable> | null>(null)
 const tableKey = ref(0)
@@ -253,6 +247,7 @@ watch(
 
 provide('useData', {
   data: computed(() => props.data),
+  renderData: computed(() => renderData.value),
   updateData: (data: TableData[]) => {
     emit('update:data', data)
   },
@@ -266,50 +261,101 @@ provide('useFilterStore', {
 })
 
 /** *************************************选中事件 *******************************  */
-const activeColumn = ref<number | null>(null)
-const activeCell = ref<{ rowIndex: number; columnIndex: number } | null>(null)
+const activeColumnKey = ref<string>(null)
+const activeCell = ref<{ row:any , column:any, value:any, cellKey:string } | null>(null)
 /********************************单元格选择****************************   */
-const selectCell = (row: any, column: any, cell: any, event?: Event) => {
-  activeColumn.value = null
-  const columnIndex = renderColumns.value.findIndex((item) => item.key === column.rawColumnKey)
-  const rowIndex = renderData.value.findIndex((item) => item.id === row.id)
-  activeCell.value = { rowIndex, columnIndex }
-}
-const changeCellStyle = (data: any) => {
-  if (activeCell.value === null) return {}
-
-  if (
-    data.rowIndex === activeCell.value.rowIndex &&
-    data.columnIndex === activeCell.value.columnIndex
-  ) {
-    return {
-      border: '1px solid #409eff',
-    }
+const selectCell = (row: any, column: any, cell: HTMLTableCellElement, event?: Event) => {
+  activeColumnKey.value = null
+  const cellKey = getCellKey(row, column)
+  activeCell.value = {
+    row,
+    column,
+    value: row[column.property],
+    cellKey,
   }
+
+}
+const changeCellName = ({row, column}) => {
+  return activeCell.value && activeCell.value.cellKey === getCellKey(row, column)? 'active-cell' : ''
 }
 /*********************************列选择*****************************   */
 const selectColumn = (column: any) => {
-  const columnIndex = renderColumns.value.findIndex((item) => item.key === column.rawColumnKey)
-  activeColumn.value = columnIndex
+  const property = column.property
+  const value = renderData.value.map((item) => item[property])[0] || undefined 
+  const row = renderData.value.map((item) => item)[0]
+  activeColumnKey.value = column.rawColumnKey
+  const cellKey = getCellKey(row, column)
+
   if (renderData.value.length > 0) {
     activeCell.value = {
-      rowIndex: 0,
-      columnIndex: columnIndex,
-    }
+    row,
+    column,
+    value,
+    cellKey,
+  }
   } else {
     activeCell.value = null
   }
+
 }
 
-const changeColumnStyle = (data: any) => {
-  const columnIndex = data.columnIndex
+const changeColumnName = (data: any) => {
+  if(data.column.type === 'header') return ''
+  const key =data.column.rawColumnKey
+
   // 为选中列的表头添加样式
-  if (activeColumn.value !== null && columnIndex === activeColumn.value) {
+  if (activeColumnKey && activeColumnKey.value === key) {
     return 'active-column-header'
   }
 
   return ''
 }
+
+/*************************************右键菜单**********************************  */
+const handleContextMenu = (e: Event) => {
+  e.preventDefault()
+}
+
+// 组件挂载时添加监听
+onMounted(() => {
+  document.addEventListener('contextmenu', handleContextMenu)
+})
+
+// 组件卸载时移除监听（关键步骤）
+onUnmounted(() => {
+  document.removeEventListener('contextmenu', handleContextMenu)
+})
+const mousePosition = ref<{ x: number; y: number } | null>(null)
+const isMenu = ref(false)
+const openCellMenu = (row:any,column:any,cell: HTMLTableCellElement,event: MouseEvent) => {
+
+  activeCell.value = {
+    row,
+    column,
+    value: row[column.property],
+    cellKey: getCellKey(row, column),
+  }
+  const rect = tableRef.value.$el.getBoundingClientRect()
+  mousePosition.value = {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top,
+  }
+  isMenu.value = true
+}
+const updateisMenu = (value: boolean) => {
+  isMenu.value = value
+}
+provide('useActiveCell',{
+  activeCell,
+})
+
+
+/*******************************详情行*************************** */
+const isDetail = ref(false)
+const updateisDetail = (value: boolean) => {
+  isDetail.value = value
+}
+
 </script>
 
 <style lang="scss" scoped>

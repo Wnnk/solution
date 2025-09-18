@@ -1,4 +1,4 @@
-import { ColumnType } from './type'
+import { ColumnType } from '../type'
 import { Ref, isRef, isReactive, ref } from 'vue'
 
 /**
@@ -80,13 +80,13 @@ export const freezeFirstColumn = (columns: Ref<ColumnType[]>, key: string) => {
 
 /**
  * @description: 固定列尾
- * @param { Ref<TableColumns> }columns 表格列配置
+ * @param { any }columns 表格列配置
  * @param { string }key 唯一标识
  * @return columns 新的列配置
  *
  */
 
-export const freezeLastColumn = (columns: Ref<ColumnType[]>, key: string) => {
+export const freezeLastColumn = (columns: any, key: string) => {
   const newColumns = [...columns.value]
   const targetIndex = newColumns.findIndex((item) => item.key === key)
   if (targetIndex === -1) return newColumns
@@ -100,13 +100,13 @@ export const freezeLastColumn = (columns: Ref<ColumnType[]>, key: string) => {
 
 /**
  * @description: 向左插入列
- * @param { Ref<TableColumns> }columns 表格列配置
+ * @param { any}columns 表格列配置
  * @param { string }key 唯一标识
- * @param { ColumnType }column 要插入的列
+ * @param { any }column 要插入的列
  * @return columns 新的列配置
  *
  */
-export const insertLeftColumn = (columns: Ref<ColumnType[]>, key: string, column: ColumnType) => {
+export const insertLeftColumn = (columns: any, key: string, column: any) => {
   const index = columns.value.findIndex((item) => item.key === key)
   if (index === -1) {
     return columns
@@ -117,13 +117,13 @@ export const insertLeftColumn = (columns: Ref<ColumnType[]>, key: string, column
 
 /**
  * @description: 向右插入列
- * @param { Ref<TableColumns> }columns 表格列配置
+ * @param { any }columns 表格列配置
  * @param { string }key 唯一标识
- * @param { ColumnType }column 要插入的列
+ * @param { any }column 要插入的列
  * @return columns 新的列配置
  *
  */
-export const insertRightColumn = (columns: Ref<ColumnType[]>, key: string, column: ColumnType) => {
+export const insertRightColumn = (columns: any, key: string, column: any) => {
   const index = columns.value.findIndex((item) => item.key === key)
   if (index === -1) {
     return columns
@@ -134,11 +134,11 @@ export const insertRightColumn = (columns: Ref<ColumnType[]>, key: string, colum
 
 /**
  * @description: 删除列
- * @param { Ref<TableColumns> }columns 表格列配置
+ * @param { any }columns 表格列配置
  * @param { string }key 唯一标识
  * @return columns 新的列配置
  */
-export const deleteColumn = (columns: Ref<ColumnType[]>, key: string) => {
+export const deleteColumn = (columns: any, key: string) => {
   const index = columns.value.findIndex((item) => item.key === key)
   if (index === -1) {
     return columns

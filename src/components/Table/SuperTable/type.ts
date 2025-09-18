@@ -3,7 +3,6 @@ import { Ref } from 'vue'
 type ColumnFixed = 'left' | 'right'
 
 export type ColumnType = {
-  id: string
   key: string
   label?: string
   width?: number
@@ -15,16 +14,19 @@ export type ColumnType = {
 
 export type TableData = {
   id: string
-  cusName: string
-  proName: string
-  status: string
-  proLeader: string
-  projectTotalAmount: number
-  projectReceivedAmount: number
-  projectRemainingReceivable: number
-  projectEstimatedCost: number
-  projectPaidCost: number
-  createTime: string
+  children?:TableData[]
+  // cusName: string
+  // proName: string
+  // status: string
+  // proLeader: string
+  // projectTotalAmount: number
+  // projectReceivedAmount: number
+  // projectRemainingReceivable: number
+  // projectEstimatedCost: number
+  // projectPaidCost: number
+  // createTime: string
+  [key: string]: any;
+  
 }
 
 
@@ -78,6 +80,7 @@ export type UseSort = {
 
 export type UseData = {
   data: Ref<TableData[]>
+  renderData: Ref<TableData[]>
   updateData: (data: TableData[]) => void
 }
 
@@ -92,4 +95,8 @@ export type UseDraggable = {
   updateDraggable: (isDraggable: boolean) => void
   dragColumn:(tabeleRef: Ref<HTMLTableElement>) => void
   makeColumnsDraggable:(headerSelector: string, columns: ColumnType[], hander: string, onColumnsSorted: (newColumns: ColumnType[]) => void) => void
+}
+
+export type UseActiveCell = {
+  activeCell: Ref<{ row: any; column: any, value: any, cellKey: any } | null>
 }

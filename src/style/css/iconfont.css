@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 5000676 */
-  src: url('//at.alicdn.com/t/c/font_5000676_5zqerb8v49n.woff2?t=1757512086442') format('woff2'),
-       url('//at.alicdn.com/t/c/font_5000676_5zqerb8v49n.woff?t=1757512086442') format('woff'),
-       url('//at.alicdn.com/t/c/font_5000676_5zqerb8v49n.ttf?t=1757512086442') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_5000676_u4xwyg2e5m.woff2?t=1758030248178') format('woff2'),
+       url('//at.alicdn.com/t/c/font_5000676_u4xwyg2e5m.woff?t=1758030248178') format('woff'),
+       url('//at.alicdn.com/t/c/font_5000676_u4xwyg2e5m.ttf?t=1758030248178') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-above:before {
+  content: "\e635";
+}
+
+.icon-below:before {
+  content: "\e636";
+}
+
+.icon-detail:before {
+  content: "\e72c";
+}
+
+.icon-add-children:before {
+  content: "\e604";
 }
 
 .icon-drag:before {
@@ -37,7 +53,7 @@
   content: "\e653";
 }
 
-.icon-delete-column:before {
+.icon-delete:before {
   content: "\e6a0";
 }
 
