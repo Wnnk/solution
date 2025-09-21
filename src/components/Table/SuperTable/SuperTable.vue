@@ -16,7 +16,7 @@
           :cell-class-name="changeCellName"
           @cell-contextmenu="openCellMenu"
         >
-          <el-table-column type='header'>
+          <el-table-column type="header">
             <template #header>
               <TableHeader />
             </template>
@@ -41,7 +41,6 @@
                   </div>
                 </div>
               </template>
-              
             </el-table-column>
           </el-table-column>
 
@@ -60,7 +59,13 @@
         ></el-pagination>
       </el-footer>
     </el-container>
-    <CellMenu :mouse-position="mousePosition" :is-menu="isMenu" @update:is-menu="updateisMenu" @update:is-detail="updateisDetail"/>
+    <CellMenu
+      :mouse-position="mousePosition"
+      :is-menu="isMenu"
+      @update:is-menu="updateisMenu"
+      @update:is-detail="updateisDetail"
+    />
+    <TableDetail v-model:visible="isDetail" />
   </div>
 </template>
 
@@ -86,6 +91,7 @@ import { updateSortData } from './utils/SortColumns'
 import { updateFilterData } from './utils/FilterColumns'
 import { ElTable } from 'element-plus' // 导入类型
 import CellMenu from './components/TableDetail/CellMenu.vue'
+import TableDetail from './components/TableDetail/TableDetail.vue'
 
 const tableRef = ref<InstanceType<typeof ElTable> | null>(null)
 const tableKey = ref(0)
@@ -262,7 +268,7 @@ provide('useFilterStore', {
 
 /** *************************************选中事件 *******************************  */
 const activeColumnKey = ref<string>(null)
-const activeCell = ref<{ row:any , column:any, value:any, cellKey:string } | null>(null)
+const activeCell = ref<{ row: any; column: any; value: any; cellKey: string } | null>(null)
 /********************************单元格选择****************************   */
 const selectCell = (row: any, column: any, cell: HTMLTableCellElement, event?: Event) => {
   activeColumnKey.value = null
@@ -273,35 +279,35 @@ const selectCell = (row: any, column: any, cell: HTMLTableCellElement, event?: E
     value: row[column.property],
     cellKey,
   }
-
 }
-const changeCellName = ({row, column}) => {
-  return activeCell.value && activeCell.value.cellKey === getCellKey(row, column)? 'active-cell' : ''
+const changeCellName = ({ row, column }) => {
+  return activeCell.value && activeCell.value.cellKey === getCellKey(row, column)
+    ? 'active-cell'
+    : ''
 }
 /*********************************列选择*****************************   */
 const selectColumn = (column: any) => {
   const property = column.property
-  const value = renderData.value.map((item) => item[property])[0] || undefined 
+  const value = renderData.value.map((item) => item[property])[0] || undefined
   const row = renderData.value.map((item) => item)[0]
   activeColumnKey.value = column.rawColumnKey
   const cellKey = getCellKey(row, column)
 
   if (renderData.value.length > 0) {
     activeCell.value = {
-    row,
-    column,
-    value,
-    cellKey,
-  }
+      row,
+      column,
+      value,
+      cellKey,
+    }
   } else {
     activeCell.value = null
   }
-
 }
 
 const changeColumnName = (data: any) => {
-  if(data.column.type === 'header') return ''
-  const key =data.column.rawColumnKey
+  if (data.column.type === 'header') return ''
+  const key = data.column.rawColumnKey
 
   // 为选中列的表头添加样式
   if (activeColumnKey && activeColumnKey.value === key) {
@@ -327,8 +333,7 @@ onUnmounted(() => {
 })
 const mousePosition = ref<{ x: number; y: number } | null>(null)
 const isMenu = ref(false)
-const openCellMenu = (row:any,column:any,cell: HTMLTableCellElement,event: MouseEvent) => {
-
+const openCellMenu = (row: any, column: any, cell: HTMLTableCellElement, event: MouseEvent) => {
   activeCell.value = {
     row,
     column,
@@ -345,17 +350,15 @@ const openCellMenu = (row:any,column:any,cell: HTMLTableCellElement,event: Mouse
 const updateisMenu = (value: boolean) => {
   isMenu.value = value
 }
-provide('useActiveCell',{
+provide('useActiveCell', {
   activeCell,
 })
-
 
 /*******************************详情行*************************** */
 const isDetail = ref(false)
 const updateisDetail = (value: boolean) => {
   isDetail.value = value
 }
-
 </script>
 
 <style lang="scss" scoped>
