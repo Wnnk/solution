@@ -1,29 +1,32 @@
-# solution
+# Solution
+解决方案集合
+## Table
+### supertable
+表格常见功能集合
+### 表格 + 图表
+表格和图表联动
 
-This template should help get you started developing with Vue 3 in Vite.
+## Select
+### lazy
+下拉懒加载
+### 下拉分页
+下拉分页功能
 
-## Recommended IDE Setup
+## Form
+### 常见表单
+功能1:表单分页
+功能2:锚点组件，子级嵌套显示表单项，校验错误自动滚动到对应位置
+功能3:表单项权限，根据用户权限显示/隐藏表单项
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+### 表单缓存
+表单缓存功能
 
-## Customize configuration
+## dialog
+### 动态弹窗
+动态弹窗Promise化函数
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Chart
+### 常见功能
+功能1:图表字体自适应
+功能2:大数据量图表渲染 --- 分段渲染，降频渲染
 
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Compile and Minify for Production
-
-```sh
-pnpm build
-```

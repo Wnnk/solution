@@ -15,6 +15,7 @@
           @cell-click="selectCell"
           :cell-class-name="changeCellName"
           @cell-contextmenu="openCellMenu"
+          @cell-dblclick="editCell"
         >
           <el-table-column type="header">
             <template #header>
@@ -41,6 +42,12 @@
                   </div>
                 </div>
               </template>
+              <template #default="scoped">
+                <div v-if="isEdit && isActiveCell(scoped.row, scoped.column)">
+                  <el-input v-model="editVal" @blur="saveEdit" ref="editInput" @keyup.enter.native="saveEdit"></el-input>
+                </div>
+                <div v-else>{{ scoped.row[scoped.column.property] }}</div>
+              </template>
             </el-table-column>
           </el-table-column>
 
@@ -51,9 +58,9 @@
       </el-main>
       <el-footer>
         <el-pagination
-          v-if="total && pageSize && currentPage"
           :page-size="pageSize"
           :current-page="currentPage"
+          @current-change="handleCurrentChange"
           layout="prev, pager, next"
           :total="total"
         ></el-pagination>
@@ -70,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, watch, onUnmounted, onMounted } from 'vue'
+import { ref, computed, provide, watch, onUnmounted, onMounted, nextTick } from 'vue'
 import TableHeader from './components/TableHeader/TableHeader.vue'
 import { ColumnType, TableData, FilterStore } from './type'
 import TablePopover from './components/TablePopover/TablePopover.vue'
@@ -114,6 +121,12 @@ const props = defineProps({
     type: Number,
   },
 })
+
+const emit = defineEmits(['update:columns', 'update:data', 'update:pageSize', 'update:currentPage', 'update:total'])
+
+const handleCurrentChange = (val: number) => {
+  emit('update:currentPage', val)
+}
 
 /* popover相关 */
 const handerPopoverVisible = ref(false)
@@ -174,7 +187,7 @@ provide('useDraggable', {
   },
 })
 
-const emit = defineEmits(['update:columns', 'update:data'])
+
 
 provide('useColumns', {
   columns: computed(() => props.columns),
@@ -358,6 +371,47 @@ provide('useActiveCell', {
 const isDetail = ref(false)
 const updateisDetail = (value: boolean) => {
   isDetail.value = value
+}
+
+
+/**********************************双击修改******************************** */
+const isEdit = ref(false)
+const editVal = ref();
+const editInput = ref<HTMLInputElement | null>(null)
+const editCell = (row: any, column: any, cell: HTMLTableCellElement, event: MouseEvent) => {
+  isEdit.value = true
+  const cellKey = getCellKey(row, column)
+  activeCell.value = {
+    row,
+    column,
+    value: row[column.property],
+    cellKey,
+  }
+  editVal.value = _.cloneDeep(row[column.property])
+  nextTick(() => {
+    editInput.value[0]?.focus()
+  })
+}
+const isActiveCell = (row: any, column: any) => {
+  const id = row.id
+  const key = column.rawColumnKey
+  return activeCell.value && activeCell.value.cellKey === `${id}-${key}`
+}
+const saveEdit = () => {
+  isEdit.value = false
+  const newVal = _.cloneDeep(editVal.value)
+  const id = activeCell.value.row.id
+  activeCell.value.value = newVal
+
+  renderData.value = renderData.value.map((item) => {
+    if (item.id === id) {
+       item[activeCell.value.column.property] = newVal
+       return item
+    } else {
+      return item
+    }
+  })
+ 
 }
 </script>
 

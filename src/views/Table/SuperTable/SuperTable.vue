@@ -3,16 +3,16 @@
     <SuperTable
       v-model:columns="columns"
       v-model:data="tableData"
-      :total="total"
-      :pageSize="pageSize"
-      :currentPage="currentPage"
+      v-model:total="total"
+      v-model:pageSize="pageSize"
+      v-model:currentPage="currentPage"
       v-loading="status === 1"
     >
       <template #empty>
         <div class="empty-wrapper" v-if="status === 2 && tableData.length === 0">暂无数据</div>
         <div v-else-if="status === 3">
           <el-button
-            @click="loadData('/getTable', { currentPage: currentPage, pageSize: pageSize })"
+            @click="loadData('/getTable', { page: currentPage, pageSize: pageSize })"
             >重新加载</el-button
           >
         </div>
@@ -61,7 +61,12 @@ const currentPage = ref(1)
 const total = ref(0)
 const tableData = ref<TableData[] | []>([])
 
-
+watch(
+  () => currentPage.value,
+  () => {
+    loadData('/getTable', { page: currentPage.value, pageSize: pageSize.value })
+  },
+)
 
 
 const loadData = async (url: string, params?: any) => {
@@ -71,12 +76,15 @@ const loadData = async (url: string, params?: any) => {
     const data = res.data.list as TableData[]
     tableData.value = data;
     total.value = res.data.total;
+    currentPage.value = res.data.page;
+    pageSize.value = res.data.pageSize;
+    console.log(total.value, currentPage.value, pageSize.value)
     status.value = 2
   } catch (error) {
     status.value = 3
   }
 }
-loadData('/getTable', { currentPage: currentPage.value, pageSize: pageSize.value })
+loadData('/getTable', { page: currentPage.value, pageSize: pageSize.value })
 
 /* 测试用例 */
 

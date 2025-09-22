@@ -115,7 +115,6 @@ export default [
       const query = config.query || {}; // 从config中获取查询参数
       const page = parseInt(query.page) || 1;
       const pageSize = parseInt(query.pageSize) || 10;
-
       // 生成总数据量（100-500之间）
       const total = Math.floor(Math.random() * 401) + 100;
 
