@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="activeMenu"  >
+  <el-menu :default-active="activeMenu">
     <template v-for="(menu, i) in menus" :key="menu.title">
       <!-- 可点击的一级菜单（无 children） -->
       <el-menu-item v-if="!menu.children" :index="menu.path" @click="toggleView(menu.path)">
@@ -32,12 +32,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { MenuItem } from './type'
 import { watch } from 'vue'
 
-
 const router = useRouter()
 const route = useRoute()
 const activeMenu = ref()
-
-
 
 watch(
   () => route.path,
@@ -45,11 +42,9 @@ watch(
     activeMenu.value = newPath
   },
   {
-    immediate: true
-  }
+    immediate: true,
+  },
 )
-
-
 
 const toggleView = (view: string) => {
   activeMenu.value = view
@@ -112,13 +107,17 @@ const menus = ref<MenuItem[]>([
       {
         title: '表格行拖拽',
         path: '/removeRow',
-        icon: 'icon-table-romove-row'
+        icon: 'icon-table-romove-row',
       },
       {
         title: '表格多勾选',
         path: '/selectRows',
-        icon: 'icon-table-select-rows'
-      }
+        icon: 'icon-table-select-rows',
+      },
+      {
+        title: '表格内嵌图表',
+        path: '/chartTable',
+      },
     ],
   },
   {
@@ -142,6 +141,10 @@ const menus = ref<MenuItem[]>([
         title: '懒加载缓存下拉框',
         path: '/lazySelect',
         icon: 'icon-select-lazy',
+      },
+      {
+        title: '分页下拉框',
+        path: '/pageSelect',
       },
     ],
   },

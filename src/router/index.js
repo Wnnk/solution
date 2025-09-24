@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import('@/views/Select/LazySelect/LazySelect.vue'),
     },
     {
+      path: '/pageSelect',
+      name: 'PageSelect',
+      component: () => import('@/views/Select/PageSelect/PageSelect.vue'),
+    },
+    {
       path: '/dynamicDialog',
       name: 'DynamicDialog',
       component: () => import('@/views/Dialog/DynamicDialog/DynamicDialog.vue'),
@@ -58,14 +63,18 @@ const router = createRouter({
     {
       path: '/removeRow',
       name: 'RemoveRow',
-      component: () => import('@/views/Table/Remove/RemoveRow.vue')
+      component: () => import('@/views/Table/Remove/RemoveRow.vue'),
     },
     {
       path: '/selectRows',
       name: 'SelectRows',
-      component: () => import('@/views/Table/SelectRows/SelectRows.vue')
-    }
-
+      component: () => import('@/views/Table/SelectRows/SelectRows.vue'),
+    },
+    {
+      path: '/chartTable',
+      name: 'ChartTable',
+      component: () => import('@/views/Table/ChartTable/ChartTable.vue'),
+    },
   ],
 })
 
