@@ -160,6 +160,17 @@ const menus = ref<MenuItem[]>([
       },
     ],
   },
+  {
+    title: '自定义指令',
+    icon: 'icon-directive',
+    path: '/directive',
+    children: [
+      {
+        title: '骨架屏指令',
+        path: '/skeleton',
+      }
+    ]
+  }
 ])
 </script>
 

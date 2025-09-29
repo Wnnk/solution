@@ -15,6 +15,9 @@
     <FieldSettings>
       <div class="header-btn">字段配置</div>
     </FieldSettings>
+    <FillColor>
+      <div class="header-btn">填色</div>
+    </FillColor>
     <div v-if="!useDraggable.isDraggable.value" @click="toggleDraggable(true)" class="header-btn">启动列拖拽</div>
     <div v-else @click="toggleDraggable(false)" class="header-btn">禁用列拖拽</div>
   </div>
@@ -27,7 +30,9 @@ import CellHeight from './CellHeight.vue'
 import FilterPopover from './FilterPopover.vue'
 import SortPopover from './SortPopover.vue'
 import GroupPopover from './GroupPopover.vue'
+import FillColor from './FillColor.vue'
 import { UseDraggable, UseFilterStore } from '@/components/Table/SuperTable/type'
+
 
 
 

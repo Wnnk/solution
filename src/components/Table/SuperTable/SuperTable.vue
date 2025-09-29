@@ -281,7 +281,7 @@ provide('useFilterStore', {
 
 /** *************************************选中事件 *******************************  */
 const activeColumnKey = ref<string>(null)
-const activeCell = ref<{ row: any; column: any; value: any; cellKey: string } | null>(null)
+const activeCell = ref<{ row: any; column: any; value: any; cellKey: string; color?: string } | null>(null)
 /********************************单元格选择****************************   */
 const selectCell = (row: any, column: any, cell: HTMLTableCellElement, event?: Event) => {
   activeColumnKey.value = null

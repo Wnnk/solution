@@ -75,6 +75,12 @@ const router = createRouter({
       name: 'ChartTable',
       component: () => import('@/views/Table/ChartTable/ChartTable.vue'),
     },
+    /* 自定义指令 */
+    {
+      path: '/skeleton',
+      name: 'Skeleton',
+      component: () => import('@/views/DirectiveDemo/Skeleton.vue'),
+    }
   ],
 })
 

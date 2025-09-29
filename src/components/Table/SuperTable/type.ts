@@ -98,5 +98,6 @@ export type UseDraggable = {
 }
 
 export type UseActiveCell = {
-  activeCell: Ref<{ row: any; column: any, value: any, cellKey: any } | null>
+  activeCell: Ref<{ row: any; column: any, value: any, cellKey: any, color?:string } | null>
+  updateActiveCell: (value: { row: any; column: any, value: any, cellKey: any, color?: string } | null) => void
 }
