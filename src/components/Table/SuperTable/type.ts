@@ -14,7 +14,7 @@ export type ColumnType = {
 
 export type TableData = {
   id: string
-  children?:TableData[]
+  children?: TableData[]
   // cusName: string
   // proName: string
   // status: string
@@ -25,10 +25,8 @@ export type TableData = {
   // projectEstimatedCost: number
   // projectPaidCost: number
   // createTime: string
-  [key: string]: any;
-  
+  [key: string]: any
 }
-
 
 export type Sort = {
   order: string
@@ -45,7 +43,7 @@ export type Group = {
 }
 
 export type FilterStore = {
-  sort: Sort,
+  sort: Sort
   filter: Filter
   group: Group
 }
@@ -57,7 +55,7 @@ export type UseRowHeight = {
 
 export type UseColumns = {
   columns: Ref<ColumnType[]>
-  allColumns: ColumnType[]
+  renderColumns: Ref<ColumnType[]>
   editColumn: (columns: Ref<ColumnType[]>, key: string, newColumn: ColumnType) => ColumnType[]
   hideColumn: (columns: Ref<ColumnType[]>, key: string) => ColumnType[]
   toggleColumn: (columns: Ref<ColumnType[]>, key: string) => ColumnType[]
@@ -84,20 +82,26 @@ export type UseData = {
   updateData: (data: TableData[]) => void
 }
 
-
 export type UseFilterStore = {
-  filterStore:Ref<FilterStore>
+  filterStore: Ref<FilterStore>
   updateFilterStore: (newFilter: FilterStore) => FilterStore
 }
 
 export type UseDraggable = {
   isDraggable: Ref<boolean>
   updateDraggable: (isDraggable: boolean) => void
-  dragColumn:(tabeleRef: Ref<HTMLTableElement>) => void
-  makeColumnsDraggable:(headerSelector: string, columns: ColumnType[], hander: string, onColumnsSorted: (newColumns: ColumnType[]) => void) => void
+  dragColumn: (tabeleRef: Ref<HTMLTableElement>) => void
+  makeColumnsDraggable: (
+    headerSelector: string,
+    columns: ColumnType[],
+    hander: string,
+    onColumnsSorted: (newColumns: ColumnType[]) => void,
+  ) => void
 }
 
 export type UseActiveCell = {
-  activeCell: Ref<{ row: any; column: any, value: any, cellKey: any, color?:string } | null>
-  updateActiveCell: (value: { row: any; column: any, value: any, cellKey: any, color?: string } | null) => void
+  activeCell: Ref<{ row: any; column: any; value: any; cellKey: any; color?: string } | null>
+  updateActiveCell: (
+    value: { row: any; column: any; value: any; cellKey: any; color?: string } | null,
+  ) => void
 }

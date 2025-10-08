@@ -44,7 +44,12 @@
               </template>
               <template #default="scoped">
                 <div v-if="isEdit && isActiveCell(scoped.row, scoped.column)">
-                  <el-input v-model="editVal" @blur="saveEdit" ref="editInput" @keyup.enter.native="saveEdit"></el-input>
+                  <el-input
+                    v-model="editVal"
+                    @blur="saveEdit"
+                    ref="editInput"
+                    @keyup.enter.native="saveEdit"
+                  ></el-input>
                 </div>
                 <div v-else>{{ scoped.row[scoped.column.property] }}</div>
               </template>
@@ -122,7 +127,13 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['update:columns', 'update:data', 'update:pageSize', 'update:currentPage', 'update:total'])
+const emit = defineEmits([
+  'update:columns',
+  'update:data',
+  'update:pageSize',
+  'update:currentPage',
+  'update:total',
+])
 
 const handleCurrentChange = (val: number) => {
   emit('update:currentPage', val)
@@ -187,11 +198,9 @@ provide('useDraggable', {
   },
 })
 
-
-
 provide('useColumns', {
   columns: computed(() => props.columns),
-  allColumns: props.columns,
+  renderColumns: computed(() => renderColumns.value),
   editColumn,
   hideColumn,
   toggleColumn,
@@ -281,7 +290,13 @@ provide('useFilterStore', {
 
 /** *************************************选中事件 *******************************  */
 const activeColumnKey = ref<string>(null)
-const activeCell = ref<{ row: any; column: any; value: any; cellKey: string; color?: string } | null>(null)
+const activeCell = ref<{
+  row: any
+  column: any
+  value: any
+  cellKey: string
+  color?: string
+} | null>(null)
 /********************************单元格选择****************************   */
 const selectCell = (row: any, column: any, cell: HTMLTableCellElement, event?: Event) => {
   activeColumnKey.value = null
@@ -373,10 +388,9 @@ const updateisDetail = (value: boolean) => {
   isDetail.value = value
 }
 
-
 /**********************************双击修改******************************** */
 const isEdit = ref(false)
-const editVal = ref();
+const editVal = ref()
 const editInput = ref<HTMLInputElement | null>(null)
 const editCell = (row: any, column: any, cell: HTMLTableCellElement, event: MouseEvent) => {
   isEdit.value = true
@@ -405,13 +419,12 @@ const saveEdit = () => {
 
   renderData.value = renderData.value.map((item) => {
     if (item.id === id) {
-       item[activeCell.value.column.property] = newVal
-       return item
+      item[activeCell.value.column.property] = newVal
+      return item
     } else {
       return item
     }
   })
- 
 }
 </script>
 

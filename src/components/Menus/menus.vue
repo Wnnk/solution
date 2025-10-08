@@ -100,11 +100,6 @@ const menus = ref<MenuItem[]>([
         icon: 'icon-table-super',
       },
       {
-        title: '表格列宽拖拉',
-        path: '/colWidth',
-        icon: 'icon-table-col-width',
-      },
-      {
         title: '表格行拖拽',
         path: '/removeRow',
         icon: 'icon-table-romove-row',
@@ -168,9 +163,9 @@ const menus = ref<MenuItem[]>([
       {
         title: '骨架屏指令',
         path: '/skeleton',
-      }
-    ]
-  }
+      },
+    ],
+  },
 ])
 </script>
 

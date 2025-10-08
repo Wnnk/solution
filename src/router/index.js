@@ -56,11 +56,6 @@ const router = createRouter({
       component: () => import('@/views/Table/SuperTable/SuperTable.vue'),
     },
     {
-      path: '/colWidth',
-      name: 'ColWidth',
-      component: () => import('@/views/Table/ColWidth/ColWidth.vue'),
-    },
-    {
       path: '/removeRow',
       name: 'RemoveRow',
       component: () => import('@/views/Table/Remove/RemoveRow.vue'),
@@ -80,7 +75,7 @@ const router = createRouter({
       path: '/skeleton',
       name: 'Skeleton',
       component: () => import('@/views/DirectiveDemo/Skeleton.vue'),
-    }
+    },
   ],
 })
 
