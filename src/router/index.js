@@ -29,6 +29,7 @@ const router = createRouter({
       name: 'PermissionForm',
       component: () => import('@/views/Form/PermissionForm/PermissionForm.vue'),
     },
+    /* 图表 */
     {
       path: '/chartAdapt',
       name: 'ChartAdapt',
@@ -44,6 +45,17 @@ const router = createRouter({
       name: 'PageSelect',
       component: () => import('@/views/Select/PageSelect/PageSelect.vue'),
     },
+    {
+      path: '/bigDataSelect',
+      name: 'BigDataSelect',
+      component: () => import('@/views/Select/BigDataSelect/BigDataSelect.vue'),
+    },
+    {
+      path: '/superSelect',
+      name: 'SuperSelect',
+      component: () => import('@/views/Select/SuperSelect/SuperSelect.vue'),
+    },
+    /* 弹窗 */
     {
       path: '/dynamicDialog',
       name: 'DynamicDialog',
@@ -69,6 +81,12 @@ const router = createRouter({
       path: '/chartTable',
       name: 'ChartTable',
       component: () => import('@/views/Table/ChartTable/ChartTable.vue'),
+    },
+    /* tooltip */
+    {
+      path: '/bigTooltip',
+      name: 'BigTooltip',
+      component: () => import('@/views/Tooltip/BigTooltip/BigTooltip.vue'),
     },
     /* 自定义指令 */
     {

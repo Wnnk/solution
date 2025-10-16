@@ -141,6 +141,14 @@ const menus = ref<MenuItem[]>([
         title: '分页下拉框',
         path: '/pageSelect',
       },
+      {
+        title:"大量数据优化",
+        path:"/bigDataSelect",
+      },
+      {
+        title: '超级下拉框',
+        path: '/superSelect',
+      }
     ],
   },
   {
@@ -154,6 +162,17 @@ const menus = ref<MenuItem[]>([
         icon: 'icon-dialog-dynamic',
       },
     ],
+  },
+  {
+    title: 'tooltip',
+    icon: 'icon-tooltip',
+    path: '/tooltip',
+    children: [
+      {
+        title: '大量tooltip优化',
+        path: '/bigTooltip',
+      }
+    ]  
   },
   {
     title: '自定义指令',

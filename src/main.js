@@ -9,7 +9,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/style/css/iconfont.css'
 import { permission } from './directive/permission'
 import { skeleton } from './directive/skeleton'
-import { status } from './directive/status'
+
 import App from './App.vue'
 import router from './router'
 
@@ -18,6 +18,6 @@ app.use(ElementPlus)
 app.use(createPinia())
 app.use(router)
 app.directive('permission', permission)
-app.directive('status', status)
+
 app.directive('skeleton', skeleton)
 app.mount('#app')
