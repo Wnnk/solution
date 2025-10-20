@@ -6,16 +6,7 @@ export default [
     method: 'get',
     timeout: 3000,
     response: (config) => {
-      const query = config.query || {} // 从config中获取查询参数
-      // const page = query.page || 1 // 获取page参数，默认为1
-      // const pageSize = query.pageSize || 10 // 获取pageSize参数，默认为10
-      // 生成总数据量（100-500之间）
       const total = Math.floor(Math.random() * 401) + 100
-      // 计算当前页数据起始索引
-      // const startIndex = (page - 1) * pageSize
-      // 计算当前页实际数据量（最后一页可能不足pageSize）
-      // const currentDataCount = startIndex >= total ? 0 : Math.min(pageSize, total - startIndex)
-
       const getCity = () => {
         const prefixes = ['北京', '上海', '广州', '深圳', '杭州', 
           '苏州', '成都', '武汉','南京','天津','重庆','西安','长沙','郑州',
@@ -44,6 +35,4 @@ export default [
       }
     },
   }
-
-
 ]

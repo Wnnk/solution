@@ -4,7 +4,7 @@
       v-model="value" 
       :options="options" 
       v-model:status="status"
-      @reTry = "loadOptions"
+      :retry="loadOptions"
       />
   </div>
 
