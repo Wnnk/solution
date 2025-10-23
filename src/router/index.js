@@ -46,9 +46,9 @@ const router = createRouter({
       component: () => import('@/views/Select/PageSelect/PageSelect.vue'),
     },
     {
-      path: '/bigDataSelect',
-      name: 'BigDataSelect',
-      component: () => import('@/views/Select/BigDataSelect/BigDataSelect.vue'),
+      path: '/selectProblem',
+      name: 'SelectProblem',
+      component: () => import('@/views/Select/SelectProblem/SelectProblem.vue'),
     },
     {
       path: '/superSelect',
@@ -94,6 +94,12 @@ const router = createRouter({
       name: 'Skeleton',
       component: () => import('@/views/DirectiveDemo/Skeleton.vue'),
     },
+    /* 其他Demo */
+    {
+      path: '/lazyImg',
+      name: 'LazyImg',
+      component: () => import('@/views/OtherDemo/LazyImg/LazyImg.vue'),
+    }
   ],
 })
 

@@ -142,8 +142,8 @@ const menus = ref<MenuItem[]>([
         path: '/pageSelect',
       },
       {
-        title:"大量数据优化",
-        path:"/bigDataSelect",
+        title:"Select问题",
+        path:"/selectProblem",
       },
       {
         title: '超级下拉框',
@@ -185,6 +185,18 @@ const menus = ref<MenuItem[]>([
       },
     ],
   },
+  {
+    title: '其他案例',
+    icon: 'icon-other',
+    path: '/other',
+    children: [
+      {
+        title: '懒加载图片',
+        path: '/lazyImg',
+      },
+      
+    ],
+  }
 ])
 </script>
 
