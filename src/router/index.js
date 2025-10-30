@@ -5,6 +5,11 @@ const router = createRouter({
   routes: [
     /* 表单 */
     {
+      path: '/basicForm',
+      name: 'BasicForm',
+      component: () => import('@/views/Form/BasicForm/BasicForm.vue'),
+    },
+    {
       path: '/formCache',
       name: 'FormCache',
       component: () => import('@/views/Form/FormCache/FormCache.vue'),

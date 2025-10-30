@@ -9,7 +9,7 @@ interface CacheOptions {
   expireTime?: number
 }
 
-export const useFormCache = <T extends object>(key: string, options: CacheOptions = {}) => {
+export const useFormCache1 = <T extends object>(key: string, options: CacheOptions = {}) => {
   if (!key) {
     console.error('Please provide a key for the form cache')
     return {}

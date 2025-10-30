@@ -1,8 +1,10 @@
 <!-- 
   @Author: Wnnk
   @description: 
+    表单缓存解决方案
     问题1: 长表单误触后退/刷新，导致表单数据丢失
-      解决方案：表单缓存
+    问题2: 表单项如果涉及password等敏感信息 如何处理缓存
+    问题3: 存储loacalStorage 5MB限制爆满如何处理
 
 -->
 <template>
@@ -10,6 +12,9 @@
     <el-form :model="form" ref="formRef" :rules="rules">
       <el-form-item label="设备ID" prop="id">
         <el-input v-model="form.id"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" type="password"></el-input>
       </el-form-item>
       <el-form-item label="设备名称" prop="name">
         <el-input v-model="form.name"></el-input>
@@ -95,17 +100,16 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import {useFormCache } from '@/hooks/Form/useFormCache'
+import { useFormCache } from '@/hooks/Form/useCache';
 import { v4 as uuidv4 } from 'uuid';
 import { onMounted } from 'vue';
 
-const { autoSave, loadFormCache} = useFormCache(
-  'test',
-  {cacheLocation: 'localStorage'}
-)
+
+
 const form = ref({
   id: 'unique_device_id',
   name: '设备名称',
+  password: '',
   model: '设备型号',
   serialNumber: '序列号',
   manufacturer: '制造商',
@@ -139,6 +143,10 @@ const form = ref({
 })
 const formRef = ref(null)
 
+
+
+
+
 const rules = reactive({
   id: [{ required: true, message: '请输入设备ID', trigger: 'blur' }],
   name: [{ required: true, message: '请输入设备名称', trigger: 'blur' }],
@@ -148,13 +156,10 @@ const rules = reactive({
   category: [{ required: true, message: '请选择设备类别', trigger: 'change' }],
 })
 
-onMounted(async () => {
-  autoSave(form.value)
-  const cacheData = await loadFormCache()
-  if (cacheData && Object.keys(cacheData).length > 0) {
-    form.value = cacheData
-  }
-})
+  const useFormCacheInstance = useFormCache('form-cache-key', form,{
+    excludeKeys: ['password'],
+  });
+
 </script>
 
 <style lang="scss" scoped></style>

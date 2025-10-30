@@ -63,6 +63,11 @@ const menus = ref<MenuItem[]>([
     path: '/form',
     children: [
       {
+        title:'基础表单',
+        path: '/basicForm',
+        icon: 'icon-form-basic',
+      },
+      {
         title: '长表单缓存',
         path: '/formCache',
         icon: 'icon-form-cache',
